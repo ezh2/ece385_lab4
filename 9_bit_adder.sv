@@ -1,19 +1,18 @@
-// @@@ needs changing, i dont have access to B, I am adding S and A
-module 9_bit_select_adder ( 
+module adder( 
 	input  logic  [7:0] A, //9bit input A
     input  logic  [7:0] S, //9bit input B 
 	input  logic        cin, 
     input  logic        sub, //passed in from control, telling me whether we need to subtract or add. sub = 1 = subtract, sub = 0 = add
     ///input  logic        b0, //passed in from top level, which is the original MSB of B.
 	 
-	output logic  [8:0] sum, //9bit output S
+	output logic  [8:0] sum //9bit output S
 ); 
 		 
     // do the sign extention
     logic [8:0] A_extended;
     logic [8:0] S_extended;
-    A_extended = {A[7], A};
-    S_extended = {S[7], S};
+    assign A_extended = {A[7], A};
+    assign S_extended = {S[7], S};
     //
 
     //local vars
