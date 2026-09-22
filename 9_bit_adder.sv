@@ -17,17 +17,20 @@ module 9_bit_select_adder (
     logic [8:0] ones;
     assign ones = 9'b111111111;
     logic [8:0] new_b;
+    
+    // check if we need to consider other things other than sub=1 when deciding whether it's a addtion or subtraction operation
     always_comb 
     begin
         if (sub) 
         begin
-            new_b = ones ^ b + 1'b1; // if sub=1, then we will subtract b from a, so we need to take the 2's complement of b;
+            new_b = ones ^ b; // if sub=1, then we will subtract b from a, so we need to take the 2's complement of b;
+            cin = 1'b1; // this makes new_b 2's complement of b (1 XOR B +1)
         end
 
         else 
         begin
             new_b = b; // if sub=0, b remains the same
-        end
+        end // is thus valid way to solve the latch issue?
     end
     //end of subtraction dealing
 
