@@ -6,9 +6,9 @@ module register_unit (
 	input  logic        X_In,
 	
 
-	input  logic        Ld_A,
-	input  logic        Ld_B, 
-	input  logic		Ld_X,  
+	input  logic        Ld_A, // = to run signal
+	input  logic        Ld_B, // = to load_B clear A
+	input  logic		Ld_X,  // not sure if we need this
 	input  logic        Shift_En,
 
 	input  logic [8:0]  D, 
@@ -17,6 +17,8 @@ module register_unit (
 	output logic [7:0]  B,
 	output logic        X
 );
+
+	logic Shift_Out_A;
 
 	reg_8 reg_A (
 		.Clk            (Clk), 
@@ -27,7 +29,7 @@ module register_unit (
 		.Shift_En       (Shift_En),
 		.D              (D[0:7]),
 
-		.Shift_Out      (),
+		.Shift_Out      (Shift_Out_A),
 		.Data_Out       (A)
 	);
 
@@ -35,7 +37,7 @@ module register_unit (
 		.Clk            (Clk), 
 		.Reset          (Reset),
 
-		.Shift_In       (B_In), 
+		.Shift_In       (Shift_Out_A), 
 		.Load           (Ld_B), 
 		.Shift_En       (Shift_En),
 		.D              (D[0:7]),
