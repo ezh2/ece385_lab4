@@ -14,9 +14,9 @@ module multiplier_t_level (
 	output logic [1:0]  LED, //display button press
 	//HEX Output
 	output logic [7:0]  hex_seg, // Hex display control
-	output logic [3:0]  hex_grid // Hex display control
+	output logic [3:0]  hex_grid, // Hex display control
 	output logic [7:0]  Aval, //output of register A
-	output logic [7:0]  Bval //output of register B
+	output logic [7:0]  Bval, //output of register B
 	output logic 	    Xval //output of register X
 ); 
 
