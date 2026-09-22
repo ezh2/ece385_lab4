@@ -1,3 +1,4 @@
+9/21 10pm Eric (make changes if you finished something or find issues)
 dont need change:
 * negeedge_detector.sv 
 * sync_debounce.sv
