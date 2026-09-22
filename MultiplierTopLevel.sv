@@ -21,25 +21,29 @@ module multiplier_t_level (
 ); 
 
     //local logic variables go here
+
+	//synchronized inputs
 	logic Reset_Load_Clear_SH;
 	logic Run_SH;
+	logic [7:0] SW_Synced; 
+	//end of synchronized inputs	
 
+	//load and shift control signals
 	logic       Ld_A;
 	logic       Ld_B;
 	logic       Ld_X;
 	logic       newA;
 	logic       newB;
 	logic       newX;
-	logic       bitA;
-	logic       bitB;
 	logic       Shift_En;
+	//end of load and shift control signals
+
+	//adder output
+	logic       Sum;
 	logic [7:0] A; 				
 	logic [7:0] B; 				
 	logic [7:0] X;
-	logic [7:0] SW_Synced; //synchronized switch input	
-
-	//adder logic
-	logic adder_cout;			
+	//end of adder output		
 	 
 //We can use the "assign" statement to do simple combinational logic
 	assign Aval = A;
@@ -50,29 +54,30 @@ module multiplier_t_level (
 //Instantiation of modules here
 	register_unit reg_unit (
 		.Clk        (Clk),
-		.Reset      (Reset_LOAD_Clear_SH),
+		.Reset      (Reset_Load_Clear_SH),
+
+		.A_In       (newA),
+		.B_In       (newB),
+		.X_In       (newX),
 
 		.Ld_A       (Ld_A),
 		.Ld_B       (Ld_B),
 		.Ld_X       (Ld_X),
 		.Shift_En   (Shift_En),
-		.D          (SW_Synced),
-		.A_In       (newA),
-		.B_In       (newB),
-		.A_out      (opA),
-		.B_out      (opB),
+		.D          ({1'b0, SW_Synced}),
 
 		.A          (A),
-		.B          (B) 
+		.B          (B),
+		.X          (X)
 	);
 
-	// @@@@@@@ probably needs work @@@@@@@
+	// @@ probably done @@
 	adder_9bit adder_unit (
-		.a          (A),
-		.b          (B),
-		.cin        (1'b0),
-		.s          (X),
-		.cout       (adder_cout)
+		.A          (A),
+		.S          (S), 
+		.B        	(Bval), // passed in from register unit
+		.sub          (), //passed in from control
+		.sum       (Sum)
 	);
 
 

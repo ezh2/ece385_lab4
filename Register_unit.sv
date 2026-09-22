@@ -13,10 +13,6 @@ module register_unit (
 
 	input  logic [8:0]  D, 
 
-	output logic        A_out, 
-	output logic        B_out, 
-	output logic        X_Out,
-
 	output logic [7:0]  A,
 	output logic [7:0]  B,
 	output logic        X
@@ -31,7 +27,7 @@ module register_unit (
 		.Shift_En       (Shift_En),
 		.D              (D[0:7]),
 
-		.Shift_Out      (A_out),
+		.Shift_Out      (),
 		.Data_Out       (A)
 	);
 
@@ -44,7 +40,7 @@ module register_unit (
 		.Shift_En       (Shift_En),
 		.D              (D[0:7]),
 
-		.Shift_Out      (B_out),
+		.Shift_Out      (),
 		.Data_Out       (B)
 	);
 
@@ -57,7 +53,7 @@ module register_unit (
 		.Shift_En       (Shift_En),
 		.D              (D[8]),
 
-		.Shift_Out      (X_out),
+		.Shift_Out      (),
 		.Data_Out       (X)
 	);
 

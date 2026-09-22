@@ -1,11 +1,10 @@
 module adder( 
 	input  logic  [7:0] A, //9bit input A
-    input  logic  [7:0] S, //9bit input B 
-	input  logic        cin, 
+    input  logic  [7:0] S, //9bit input S
+    input  logic  [7:0] B, //9bit input B
     input  logic        sub, //passed in from control, telling me whether we need to subtract or add. sub = 1 = subtract, sub = 0 = add
-    ///input  logic        b0, //passed in from top level, which is the original MSB of B.
-	 
-	output logic  [8:0] sum //9bit output S
+
+	output logic  [8:0] sum //9bit output Sum
 ); 
 		 
     // do the sign extention
@@ -16,6 +15,7 @@ module adder(
     //
 
     //local vars
+    logic cin;
 	logic c4; // carry out of the first 4-bit block
     logic c8; // carry out of the second 4-bit block
     logic sum8_0, sum8_1; // sum of the 9th bit for both possible carry-in values
@@ -23,9 +23,6 @@ module adder(
     logic cout; // final carry out of the 9th bit
     
     //deals with subtraction case
-    //logic  sub, //if sub=1, then we will subtract b from a, if sub=0, then we will add a and b
-    //assign sub = lastBit & b[0];
-
     logic [8:0] ones;
     assign ones = 9'b111111111;
     logic [8:0] new_S;
@@ -33,10 +30,9 @@ module adder(
     // check if we need to consider other things other than sub=1 when deciding whether it's a addtion or subtraction operation
     always_comb 
     begin
-        if (sub) 
+        if (sub & B[0]) 
         begin
             new_S = ones ^ S; // if sub=1, then we will subtract S from A, so we need to take the 2's complement of S;
-            // @@@ is thus valid way to solve the latch issue? @@@
             cin = 1'b1; // this makes new_S 2's complement of S (1 XOR S +1)
         end
 
