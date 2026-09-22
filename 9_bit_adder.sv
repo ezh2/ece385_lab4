@@ -2,7 +2,7 @@ module 9_bit_select_adder (
 	input  logic  [8:0] a, //9bit input A
     input  logic  [8:0] b, //9bit input B 
 	input  logic        cin, 
-    input  logic        sub, //if sub=1, then we will subtract b from a, if sub=0, then we will add a and b
+    input  logic        lastBit, //passed in from control, telling me whether we have reached the last bit
 	 
 	output logic  [8:0] s, //9bit output S
 	output logic         cout //final carry out
@@ -14,23 +14,28 @@ module 9_bit_select_adder (
     logic cout8_0, cout8_1; // carry out of the 9th bit for both possible carry-in values
     
     //deals with subtraction case
+    logic  sub, //if sub=1, then we will subtract b from a, if sub=0, then we will add a and b
+    assign sub = lastBit & b[0];
+
     logic [8:0] ones;
     assign ones = 9'b111111111;
     logic [8:0] new_b;
-    
+
     // check if we need to consider other things other than sub=1 when deciding whether it's a addtion or subtraction operation
     always_comb 
     begin
         if (sub) 
         begin
             new_b = ones ^ b; // if sub=1, then we will subtract b from a, so we need to take the 2's complement of b;
+            // @@@ is thus valid way to solve the latch issue? @@@
             cin = 1'b1; // this makes new_b 2's complement of b (1 XOR B +1)
         end
 
         else 
         begin
-            new_b = b; // if sub=0, b remains the same
-        end // is thus valid way to solve the latch issue?
+            new_b = 9'b0; // if sub=0, nothing should be added to it, so we should just set new_b to 0
+            cin = 1'b0; // if sub=0,  nothing should be added to it, so we should just set carry-in to 0
+        end 
     end
     //end of subtraction dealing
 
