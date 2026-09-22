@@ -1,8 +1,8 @@
-module 9_bit_select_adder ( 
+module Adder( 
 	input  logic  [8:0] a, //9bit input A
     input  logic  [8:0] b, //9bit input B 
 	input  logic         cin, 
-	 
+	
 	output logic  [8:0] s, //9bit output S
 	output logic         cout //final carry out
 ); 
