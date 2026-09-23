@@ -1,4 +1,4 @@
-//Correct as of 9/23 5:25 pm
+//Correct as of 9/23 6 pm
 
 //4-bit logic processor top level module
 //for use with ECE 385 Fall 2023
@@ -45,8 +45,6 @@ module multiplier_t_level (
 	logic x_0;        //register x 
 	//end of registers and adder 
 
-
-
 //We can use the "assign" statement to do simple combinational logic
 	assign Aval = A;
 	assign Bval = B;
@@ -73,20 +71,10 @@ module multiplier_t_level (
 		.x_0        (x_0)
 	);
 
-	// @@ probably done @@ no Unfortunately it has mistakes, im leaving it commented for your understanding
-	// adder_9bit adder_unit (
-	// 	.A          (A),
-	// 	.x_0 		(x_0),
-	// 	.S          (S), 
-	// 	.B        	(Bval), // passed in from register unit
-	// 	.sub        (Sub), //passed in from control
-	// 	.sum        (Sum)
-	// 	.load_A     (Ld_A),
-	// );
 
     	adder adder_unit (
 		.A    (A),
-		.X    (x_0),
+		.x_0    (x_0),
 		.S    (SW_Synced),
 		.B    (B),
 
@@ -120,17 +108,16 @@ module multiplier_t_level (
 		.hex_seg    (hex_seg),
 		.hex_grid   (hex_grid)
 	);
-                            //// @@@@@@@@@ fajer stopped editing here To be continued............@@@@@@@@@@
 
 //Input synchronizers required for asynchronous inputs (in this case, from the switches)
 //These are array module instantiations
 //Note: S stands for SYNCHRONIZED, H stands for active HIGH, in addition in synthesis they are also debounced
 
-	sync_debounce button_sync [3:0] (
+// @@@@@@@@@@@ we need to debounce 2 buttons only
+	sync_debounce button_sync [1:0] (
 		.Clk  (Clk),
-
 		.d    ({Reset_Load_Clear, Run}),
-		.q    ({Reset_LOAD_Clear_SH, Run_SH}) @@@@@@@@$$$$$$$$$$$$$$ is there a reason to why u have it as LOAD?
+		.q    ({Reset_Load_Clear_SH, Run_SH})
 	);
 
 
@@ -140,5 +127,4 @@ module multiplier_t_level (
 		.d    (SW), 
 		.q    (SW_Synced)
 	);
-	  
-endmodule
+endmodule 

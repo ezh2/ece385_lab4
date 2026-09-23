@@ -6,7 +6,7 @@ module register_unit (
 	input  logic [7:0]  B_In,	//comes from switches
 	//clr ld as in 
 	input  logic  	    Clr_,	//comes from control and tells to reset a and x_0
-	input  logic        Ld_A_X, // @@ this comes from adder
+	input  logic        Ld_A_X, // @@ comes from top level add OR sub
 	input  logic        Ld_B, // = Reset_ClearA_LoadB  button to load_B and clear A comes from top level
 	input  logic        Shift_En,	//comes from the control unit
 	
@@ -38,7 +38,7 @@ module register_unit (
 		.Shift_En       (Shift_En),
 		.D              (B_In[7:0]),
 
-		.Shift_Out      (),	//@@ ????? is it ok to leave it with no value
+		.Shift_Out      (),	
 		.Data_Out       (B)
 	);
 

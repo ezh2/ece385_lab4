@@ -1,4 +1,4 @@
-//Correct as of 9/23 5:25 pm
+//Correct as of 9/23 6 pm
 //thi will have the fsm
 // rn the fsm is Run -> s_clear  -> Add_0 -> shift_0 ->..(etc) -> sub_7 -> shift_7 -> done
 
