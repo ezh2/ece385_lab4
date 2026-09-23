@@ -1,19 +1,20 @@
-//this is correct as of 4:45, 9/22
+//Correct as of 9/23 5:25 pm
 //thi will have the fsm
-
+// rn the fsm is Run -> s_clear  -> Add_0 -> shift_0 ->..(etc) -> sub_7 -> shift_7 -> done
 
 module control (
 	input  logic Clk,
 	input  logic Reset_ClearA_LoadB,// does what the name suggest
     input  logic Run, //start the operation
 
-    output logic Clr_Ld, //i dont know when to use clr_ld signal , is this about the registers?
-
+    output logic Clr_, // this is to clear a and x with no loading to account for consequitive multiplication
+//will give clr_ to the register a and x to know when to reset
     output logic Shift,// after we add
     output logic Add,// we add
     output logic Sub // we sub
 );
-
+//clr is justa signal but a button
+//clear x 
 
 
 //around 18 state? idle 8(add+ shift for each ),
@@ -46,13 +47,14 @@ module control (
 
 			s_idle :
 			begin
-				if (Run)
+				if (Run)    //no need to consider when its high at the same time as clr_ld_reset
 				begin
-					next_state = Add_0;
+					next_state = s_clear;
 				end
 			end
-
+        //$$$$ top level will to check b[0] to either give the adder  0 or s as input
         //clear will make it go to idle
+            s_clear:next_state = Add_0;
 			Add_0:   next_state = shift_0;
             shift_0: next_state = Add_1;
 
@@ -77,7 +79,7 @@ module control (
 			sub_7:   next_state = shift_7;
             shift_7: next_state = s_done;
 
-            s_clear: next_state = s_idle;
+           
 
 			s_done :
 			begin
@@ -99,8 +101,8 @@ module control (
 
         // $$$ im not sure of each signal for eaxch state ?
         // Clr_Ld is for the registers:
-        // X = 0, A = 0, B = switches
-        Clr_Ld = Reset_ClearA_LoadB;
+        // Clr_ clears X and A; Reset_ClearA_LoadB loads B from switches
+        Clr_   = 1'b0;  //@@@@ right?
         Shift  = 1'b0;
         Add    = 1'b0;
         Sub    = 1'b0;
@@ -118,8 +120,7 @@ module control (
 
             s_clear:
             begin
-                // Registers were cleared/loaded when button was pressed.
-                // Then this state goes to s_idle.
+                Clr_ = 1'b1; //right?
             end
 
 			s_done:
@@ -160,7 +161,7 @@ module control (
 	begin
 		if (Reset_ClearA_LoadB)
 		begin
-			curr_state <= s_clear;
+			curr_state <= s_idle;
 		end
 		else
 		begin

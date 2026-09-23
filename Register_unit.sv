@@ -1,62 +1,58 @@
+
+//Correct as of 9/23 5:45 pm
 module register_unit (
 	input  logic        Clk, 
-	input  logic        Reset,
-	input  logic        A_In,
-	input  logic        B_In,
-	input  logic        X_In,
+	input  logic [8:0]  A_In,	// comes from the sum that is 9 (adder)
+	input  logic [7:0]  B_In,	//comes from switches
+	//clr ld as in 
+	input  logic  	    Clr_,	//comes from control and tells to reset a and x_0
+	input  logic        Ld_A_X, // @@ this comes from adder
+	input  logic        Ld_B, // = Reset_ClearA_LoadB  button to load_B and clear A comes from top level
+	input  logic        Shift_En,	//comes from the control unit
 	
-
-	input  logic        Ld_A, // = to run signal
-	input  logic        Ld_B, // = to load_B clear A
-	input  logic		Ld_X,  // not sure if we need this
-	input  logic        Shift_En,
-
-	input  logic [8:0]  D, 
-
-	output logic [7:0]  A,
-	output logic [7:0]  B,
-	output logic        X
+	output logic [7:0]  A,	//new one
+	output logic [7:0]  B,	//new one
+	output logic        x_0
 );
-
-	logic Shift_Out_A;
+//rename x to x_0
+//signal
+	
+	logic A_shift_out;
 
 	reg_8 reg_A (
 		.Clk            (Clk), 
-		.Reset          (Reset),
-
-		.Shift_In       (A_In), 
-		.Load           (Ld_A), 
+		.Reset          (Ld_B || Clr_),//cause the same signal(button) that loads b resets A
+		.Shift_In       (x_0), 
+		.Load           (Ld_A_X), 
 		.Shift_En       (Shift_En),
-		.D              (D[0:7]),
-
-		.Shift_Out      (Shift_Out_A),
+		.D              (A_In[7:0]),
+		.Shift_Out      (A_shift_out),
 		.Data_Out       (A)
 	);
 
 	reg_8 reg_B (
 		.Clk            (Clk), 
-		.Reset          (Reset),
-
-		.Shift_In       (Shift_Out_A), 
+		.Reset          (1'b0), //we never reset it		
+		.Shift_In       (A_shift_out), 
 		.Load           (Ld_B), 
 		.Shift_En       (Shift_En),
-		.D              (D[0:7]),
+		.D              (B_In[7:0]),
 
-		.Shift_Out      (),
+		.Shift_Out      (),	//@@ ????? is it ok to leave it with no value
 		.Data_Out       (B)
 	);
 
 	reg_1 reg_X (
 		.Clk            (Clk), 
-		.Reset          (Reset),
+		.Reset		    (Ld_B || Clr_),	//yes we do reset it when we load a new b or do consequitve mult
 
-		.Shift_In       (X_In), 
-		.Load           (Ld_X), 
-		.Shift_En       (Shift_En),
-		.D              (D[8]),
-
-		.Shift_Out      (),
-		.Data_Out       (X)
+		.Shift_In       (1'b0), //never used
+		.Load           (Ld_A_X), //this is loaded with A
+		.Shift_En       (1'b0),	
+		.D              (A_In[8]),	
+		
+		.Shift_Out      (x_0),	//we shouldnt drive one signal by 2 signals
+		.Data_Out       ()
 	);
 
 
@@ -64,7 +60,7 @@ endmodule
 
 module reg_1(
 	input  logic 		  Clk, 
-	input  logic 		  Reset, 
+	input  logic 		  Reset,
 	input  logic 		  Shift_In, 
 	input  logic 		  Load, 
 	input  logic 		  Shift_En,
@@ -113,7 +109,7 @@ endmodule
 
 module reg_8 (
 	input  logic 		  Clk, 
-	input  logic 		  Reset, 
+	input  logic 		  Reset,
 	input  logic 		  Shift_In, 
 	input  logic 		  Load, 
 	input  logic 		  Shift_En,
