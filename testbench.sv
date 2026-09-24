@@ -9,7 +9,7 @@ module testbench(); //even though the testbench doesn't create any hardware, it 
     logic Reset_Load_Clear;
     logic Run;
     logic [7:0] SW;
-    logic [1:0] LED;
+    //logic [1:0] LED;
     logic [7:0] hex_seg;
     logic [3:0] hex_grid;
     logic [7:0] Aval;
@@ -21,7 +21,7 @@ module testbench(); //even though the testbench doesn't create any hardware, it 
         .Reset_Load_Clear(Reset_Load_Clear),
         .Run(Run),
         .SW(SW),
-        .LED(LED),
+        //.LED(LED),
         .hex_seg(hex_seg),
         .hex_grid(hex_grid),
         .Aval(Aval),

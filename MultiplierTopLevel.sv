@@ -15,7 +15,7 @@ module multiplier_t_level (
 	input  logic        Run, // Push button 1 (Execute)
 	input  logic [7:0]  SW, // Switches input
 
-	output logic [1:0]  LED, //display buttons press for Run and Reset_Load_Clear buttons
+	//output logic [1:0]  LED, //display buttons press for Run and Reset_Load_Clear buttons
 	//HEX Output
 	output logic [7:0]  hex_seg, // Hex display control
 	output logic [3:0]  hex_grid, // Hex display control
@@ -49,7 +49,7 @@ module multiplier_t_level (
 	assign Aval = A;
 	assign Bval = B;
 	assign Xval = x_0;
-	assign LED  = {Reset_Load_Clear_SH, Run_SH}; //Concatenate is a common operation in HDL
+	//assign LED  = {Reset_Load_Clear_SH, Run_SH}; //Concatenate is a common operation in HDL
 
 //Instantiation of modules here
 
@@ -71,10 +71,20 @@ module multiplier_t_level (
 		.x_0        (x_0)
 	);
 
+	// @@ probably done @@ no Unfortunately it has mistakes, im leaving it commented for your understanding
+	// adder_9bit adder_unit (
+	// 	.A          (A),
+	// 	.x_0 		(x_0),
+	// 	.S          (S), 
+	// 	.B        	(Bval), // passed in from register unit
+	// 	.sub        (Sub), //passed in from control
+	// 	.sum        (Sum)
+	// 	.load_A     (Ld_A),
+	// );
 
-    	adder adder_unit (
+    adder adder_unit (
 		.A    (A),
-		.x_0    (x_0),
+		.x_0   (x_0),
 		.S    (SW_Synced),
 		.B    (B),
 

@@ -71,14 +71,14 @@ module HexDriver (
                 hex_seg = ~hex[1];
                 hex_grid = 4'b1101;
             end
-            2'b10: begin
-                hex_seg = ~hex[2];
-                hex_grid = 4'b1011;
-            end
-            2'b11: begin
-                hex_seg = ~hex[3];
-                hex_grid = 4'b0111;
-            end
+             2'b10: begin
+                 hex_seg = ~hex[2];
+                 hex_grid = 4'b1011;
+             end
+             2'b11: begin
+                 hex_seg = ~hex[3];
+                 hex_grid = 4'b0111;
+             end
             endcase
         end
     end
