@@ -115,14 +115,14 @@ module multiplier_t_level (
 
 // @@@@@@@@@@@ we need to debounce 2 buttons only
 	sync_debounce button_sync [1:0] (
-		.Clk  (Clk),
+		.clk  (Clk),
 		.d    ({Reset_Load_Clear, Run}),
 		.q    ({Reset_Load_Clear_SH, Run_SH})
 	);
 
 
 	sync_debounce SW_sync [7:0] (
-		.Clk  (Clk), 
+		.clk  (Clk), 
 
 		.d    (SW), 
 		.q    (SW_Synced)
